@@ -1,4 +1,5 @@
-﻿using APIBanHang.Models;
+﻿using APIBanHang.Data;
+using APIBanHang.Models;
 using APIBanHang.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,60 +10,63 @@ namespace APIBanHang.Controllers
     [ApiController]
     public class NhanVienController : ControllerBase
     {
-        private readonly INhanVienServices nhanVienServices_;
-        public NhanVienController(INhanVienServices nhanVienServices)
+        private readonly INhanVienService services_;
+        public NhanVienController(INhanVienService services)
         {
-            this.nhanVienServices_ = nhanVienServices;
+            services_ = services;
         }
 
         [HttpGet("danh-sach-nhan-vien")]
 
-        public async Task<IActionResult> GetAllNhanVien()
+        public async Task<IActionResult> GetAll()
         {
-            var nv = await nhanVienServices_.GetAll();
+            var nv = await services_.GetAll();
+            if (nv == null)
+            {
+                return NotFound();
+            }
             return Ok(nv);
         }
 
         [HttpGet("nhan-vien/{id}")]
 
-        public async Task<IActionResult> GetNhanVienByID(string id)
+        public async Task<IActionResult> GetByID(string id)
         {
-            var nv = await nhanVienServices_.GetByID(id);
+            var nv = await services_.GetById(id);
             if (nv == null)
             {
-                return BadRequest();
+                return BadRequest($"không tìm thấy nhân viên có id là {id}");
             }
             return Ok(nv);
         }
 
         [HttpPost("them-nhan-vien")]
-        public async Task<IActionResult> CreateNhanVien(MNhanVien nhanVien)
+        public async Task<IActionResult> Create(Nhanvien nhanVien)
         {
             if (nhanVien == null)
             {
                 return BadRequest();
             }
-            await nhanVienServices_.Create(nhanVien);
+            await services_.Create(nhanVien);
             return Ok();
 
         }
         [HttpPut("chinh-sua-nhan-vien/{id}")]
-        public async Task<IActionResult> EditNhanVien(string id, MNhanVien nhanVien)
+        public async Task<IActionResult> Edit(string id, Nhanvien nhanVien)
         {
             if (nhanVien == null)
             {
                 return BadRequest();
             }
-            await nhanVienServices_.Update(id, nhanVien);
+            await services_.Update(id, nhanVien);
             return Ok();
         }
 
         [HttpDelete("xoa-nhan-vien/{id}")]
 
-        public async Task<IActionResult> DeleteNhanVien(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-
-            await nhanVienServices_.Delete(id);
+            await services_.Delete(id);
             return Ok();
         }
     }

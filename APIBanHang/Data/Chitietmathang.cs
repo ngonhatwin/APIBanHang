@@ -14,4 +14,10 @@ public partial class Chitietmathang
     public string? MauSac { get; set; }
 
     public string? KichThuoc { get; set; }
+
+    public int? SoLuong { get; set; }
+
+    public string? DonViTinh { get; set; }
+
+    public decimal? GiaHang { get; set; }
 }

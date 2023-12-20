@@ -1,5 +1,7 @@
-﻿using APIBanHang.Models;
+﻿using APIBanHang.Data;
+using APIBanHang.Models;
 using APIBanHang.Services;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,22 +11,22 @@ namespace APIBanHang.Controllers
     [ApiController]
     public class KhachHangController : ControllerBase
     {
-        private readonly IKhachHangServices khachHangServices_;
+        private readonly IKhachHangService services_;
 
-        public KhachHangController(IKhachHangServices khachHangServices_)
+        public KhachHangController(IKhachHangService services)
         {
-            this.khachHangServices_ = khachHangServices_;
+            services_ = services;
         }
         [HttpGet("danh-sach-khach-hang")]
-        public async Task<IActionResult> GetAllKhachHang()
+        public async Task<IActionResult> GetAll()
         {
-            var kh = await khachHangServices_.GetAll();
+            var kh = await services_.GetAll();
             return Ok(kh);
         }
         [HttpGet("khach-hang/{id}")]
-        public async Task<IActionResult> GetKhachHangById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var kh = await khachHangServices_.GetByID(id);
+            var kh = await services_.GetById(id);
             if (kh == null)
             {
                 return NotFound();
@@ -32,31 +34,31 @@ namespace APIBanHang.Controllers
             return Ok(kh);
         }
         [HttpPost("them-khach-hang")]
-        public async Task<IActionResult> CreateKhachHang(MKhachHang khachhang)
+        public async Task<IActionResult> Create(Khachhang khachhang)
         {
             if (khachhang == null)
             {
                 return BadRequest();
             }
-            await khachHangServices_.Create(khachhang);
+            await services_.Create(khachhang);
             return Ok();
         }
 
         [HttpPut("khach-hang/{id}")]
-        public async Task<IActionResult> UpdateKhachHang(string id, MKhachHang khachhang)
+        public async Task<IActionResult> Update(string id, Khachhang khachhang)
         {
             if (khachhang == null)
             {
                 return BadRequest();
             }
-            await khachHangServices_.Update(id, khachhang);
+            await services_.Update(id, khachhang);
             return Ok();
         }
 
         [HttpDelete("khach-hang/{id}")]
-        public async Task<IActionResult> Deletekhachhang(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            await khachHangServices_.Delete(id);
+            await services_.Delete(id);
             return NoContent();
         }
     }

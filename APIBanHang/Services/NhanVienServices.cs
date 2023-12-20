@@ -1,18 +1,30 @@
-﻿using APIBanHang.Models;
+﻿using APIBanHang.Data;
+using APIBanHang.Models;
 using APIBanHang.Repository;
+
 
 namespace APIBanHang.Services
 {
-    public class NhanVienServices : INhanVienServices
+    public interface INhanVienService
     {
-        private readonly IRepository<MNhanVien> repository_;
-        public NhanVienServices(IRepository<MNhanVien> repository)
+        Task<IEnumerable<Nhanvien>> GetAll();
+        Task<Nhanvien> GetById(string id);
+        Task Create(Nhanvien account);
+        Task Update(string id, Nhanvien account);
+        Task Delete(string id);
+
+        //Task<IEnumerable<MDonDatHang>> SearchAllAccountByName(string name);
+    }
+    public class NhanVienServices : INhanVienService
+    {
+        private readonly IRepository<Nhanvien> repository_;
+        public NhanVienServices(IRepository<Nhanvien> repository)
         {
             repository_ = repository;
         }
-        public async Task Create(MNhanVien Nhanvien)
+        public async Task Create(Nhanvien nhanVien)
         {
-            await repository_.Create(Nhanvien);
+            await repository_.Create(nhanVien);
         }
 
         public async Task Delete(string id)
@@ -20,24 +32,19 @@ namespace APIBanHang.Services
             await repository_.Delete(id);
         }
 
-        public Task<IEnumerable<MNhanVien>> GetAll()
+        public async Task<IEnumerable<Nhanvien>> GetAll()
         {
-            return repository_.GetAll();
+            return await repository_.GetAll();
         }
 
-        public Task<MNhanVien> GetByID(string id)
+        public async Task<Nhanvien> GetById(string id)
         {
-            return repository_.GetById(id);
+            return await repository_.GetById(id);
         }
 
-        public Task<IEnumerable<MNhanVien>> GetPageNhanVien(int page, int pageSize)
+        public async Task Update(string id, Nhanvien nhanVien)
         {
-            return repository_.GetPage(page, pageSize);
-        }
-
-        public Task Update(string id, MNhanVien Nhanvien)
-        {
-            return repository_.Update(id, Nhanvien);
+            await repository_.Update(id, nhanVien);
         }
     }
 }

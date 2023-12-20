@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using APIBanHang.Secure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace APIBanHang.Data;
@@ -14,7 +15,7 @@ public partial class XyzContext : DbContext
         : base(options)
     {
     }
-
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<Chitietdonhang> Chitietdonhangs { get; set; }
@@ -52,6 +53,10 @@ public partial class XyzContext : DbContext
             entity.Property(e => e.UserName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .HasColumnName("Email");
+            
         });
 
         modelBuilder.Entity<Chitietdonhang>(entity =>
@@ -91,6 +96,10 @@ public partial class XyzContext : DbContext
             entity.Property(e => e.KichThuoc).HasMaxLength(20);
             entity.Property(e => e.MauSac).HasMaxLength(10);
             entity.Property(e => e.TenHang).HasMaxLength(30);
+            entity.Property(e => e.DonViTinh).HasMaxLength(10);
+            entity.Property(e => e.GiaHang).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.CanNang).HasMaxLength(20);
+            entity.Property(e => e.SoLuong).HasColumnType("decimal(10, 2)");
         });
 
         modelBuilder.Entity<Dondathang>(entity =>
@@ -138,7 +147,7 @@ public partial class XyzContext : DbContext
             entity.Property(e => e.MaAccount).HasMaxLength(50);
             entity.Property(e => e.SanPhamMua).HasMaxLength(20);
             entity.Property(e => e.TenKhachHang).HasMaxLength(50);
-
+            
             entity.HasOne(d => d.MaAccountNavigation).WithMany(p => p.Khachhangs)
                 .HasForeignKey(d => d.MaAccount)
                 .HasConstraintName("FK__KHACHHANG__Fax__398D8EEE");
@@ -167,9 +176,7 @@ public partial class XyzContext : DbContext
                 .HasMaxLength(4)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.DonViTinh).HasMaxLength(10);
-            entity.Property(e => e.GiaHang).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.KichThuoc).HasMaxLength(20);
+       
             entity.Property(e => e.MaCongTy)
                 .HasMaxLength(3)
                 .IsUnicode(false)
@@ -178,7 +185,7 @@ public partial class XyzContext : DbContext
                 .HasMaxLength(2)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.MauSac).HasMaxLength(10);
+            
             entity.Property(e => e.TenHang).HasMaxLength(30);
 
             entity.HasOne(d => d.MaCongTyNavigation).WithMany(p => p.Mathangs)
@@ -188,6 +195,12 @@ public partial class XyzContext : DbContext
             entity.HasOne(d => d.MaLoaiHangNavigation).WithMany(p => p.Mathangs)
                 .HasForeignKey(d => d.MaLoaiHang)
                 .HasConstraintName("FK__MATHANG__MaLoaiH__4316F928");
+            entity.HasOne(d => d.ChitietmathangNavigation).WithMany()
+                .HasForeignKey(d => d.MaHang);
+                
+            
+
+
         });
 
         modelBuilder.Entity<Nhacungcap>(entity =>

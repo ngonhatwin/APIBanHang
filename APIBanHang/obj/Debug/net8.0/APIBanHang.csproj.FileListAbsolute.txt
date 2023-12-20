@@ -134,3 +134,8 @@ C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\obj\Debug\net8.0\refint\APIBan
 C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\obj\Debug\net8.0\APIBanHang.pdb
 C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\obj\Debug\net8.0\APIBanHang.genruntimeconfig.cache
 C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\obj\Debug\net8.0\ref\APIBanHang.dll
+C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\obj\Debug\net8.0\APIBanHang.sourcelink.json
+C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\bin\Debug\net8.0\CsvHelper.dll
+C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Google.dll
+C:\Users\ngonh\source\repos\APIBanHang\APIBanHang\bin\Debug\net8.0\APIBanHang.staticwebassets.runtime.json

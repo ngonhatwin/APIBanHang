@@ -1,49 +1,50 @@
-﻿using APIBanHang.Models;
+﻿using APIBanHang.Data;
+using APIBanHang.Models;
 using APIBanHang.Repository;
+
 
 namespace APIBanHang.Services
 {
-    public class KhachHangServices : IKhachHangServices
+    public interface IKhachHangService
     {
-        private readonly IRepository<MKhachHang> khachHangRepository_;
+        Task<IEnumerable<Khachhang>> GetAll();
+        Task<Khachhang> GetById(string id);
+        Task Create(Khachhang account);
+        Task Update(string id, Khachhang account);
+        Task Delete(string id);
 
-        public KhachHangServices(IRepository<MKhachHang> repository_)
+        //Task<IEnumerable<MDonDatHang>> SearchAllAccountByName(string name);
+    }
+    public class KhachHangServices : IKhachHangService
+    {
+        private readonly IRepository<Khachhang> repository_;
+        public KhachHangServices(IRepository<Khachhang> repository) 
         {
-            khachHangRepository_ = repository_;
+            repository_ = repository;
         }
-        public async Task Create(MKhachHang khachHang)
+        public async Task Create(Khachhang khachHang)
         {
-            await khachHangRepository_.Create(khachHang);
+            await repository_.Create(khachHang);
         }
 
         public async Task Delete(string id)
         {
-            await khachHangRepository_.Delete(id);
+            await repository_.Delete(id);
         }
 
-        public Task<IEnumerable<MKhachHang>> GetAll()
+        public async Task<IEnumerable<Khachhang>> GetAll()
         {
-            return khachHangRepository_.GetAll();
+            return await repository_.GetAll();
         }
 
-        public async Task<MKhachHang> GetByID(string id)
+        public async Task<Khachhang> GetById(string id)
         {
-            return await khachHangRepository_.GetById(id);
+            return await repository_.GetById(id);
         }
 
-        public async Task<IEnumerable<MKhachHang>> GetPageKhachHang(int page, int pageSize)
+        public async Task Update(string id, Khachhang khachHang)
         {
-            return await khachHangRepository_.GetPage(page, pageSize);
+            await repository_.Update(id, khachHang);
         }
-
-        //public Task<IEnumerable<MKhachHang>> SearchKhachHang(string keyword)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        public async Task Update(string id, MKhachHang khachHang)
-        {
-            await khachHangRepository_.Update(id, khachHang);
-        }
-
     }
 }

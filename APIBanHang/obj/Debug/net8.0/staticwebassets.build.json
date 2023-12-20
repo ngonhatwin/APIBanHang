@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "zaLfaMNanBZlTE3jsJrlHyGuw6tEaazAfRsLpS9PisY=",
+  "Hash": "EhQ7wgBXBvP8FR1WhEdGK2IVo9XZBFJYuqXrexby8Gg=",
   "Source": "APIBanHang",
   "BasePath": "_content/APIBanHang",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "APIBanHang\\wwwroot",
+      "Source": "APIBanHang",
+      "ContentRoot": "C:\\Users\\ngonh\\source\\repos\\APIBanHang\\APIBanHang\\wwwroot\\",
+      "BasePath": "_content/APIBanHang",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }
