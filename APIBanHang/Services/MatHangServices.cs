@@ -12,14 +12,18 @@ namespace APIBanHang.Services
     {
         Task<IEnumerable<Mathang>> GetAll();
         Task<IEnumerable<MMatHang>> GetByModels();
+        Task<Chitietmathang> getChiTietByid(string id);
        // Task<IEnumerable<MMatHang>> GetAllMatHangSortedByGiaHang();
         Task<Mathang> GetById(string id);
 
         //Task<IEnumerable<MMatHang>> GetAllMatHang(string search, decimal? from, decimal? to);
         Task Create(Mathang matHang);
+        Task CreateByModels(MMatHang model);
         Task Update(string id, Mathang matHang);
         Task Delete(string id);
         Task <IEnumerable<MMatHang>> Paging(int page);
+        Task<IEnumerable<Mathang>> SearchByName(string name);
+        Task UpdateByModels(string id,  MMatHang model);
     }
     public class MatHangServices : IMatHangService
     {
@@ -35,6 +39,7 @@ namespace APIBanHang.Services
         {
             await repository_.Create(matHang);
         }
+        
 
         public async Task Delete(string id)
         {
@@ -44,6 +49,7 @@ namespace APIBanHang.Services
         public async Task<IEnumerable<Mathang>> GetAll()
         {
             return await repository_.GetAll();
+            
         }
 
         public async Task<IEnumerable<MMatHang>> GetByModels()
@@ -168,6 +174,79 @@ namespace APIBanHang.Services
             return await result.ToListAsync();
         }
 
+        public async Task<IEnumerable<Mathang>> SearchByName(string name)
+        {
+            IQueryable<Mathang> query = _context.Mathangs;
 
+            var matHang = (from mh in query where mh.TenHang.Contains(name) select mh);
+            if(matHang != null)
+            {
+                return await matHang.ToListAsync();
+            }
+            return null;
+        }
+
+        public async Task CreateByModels(MMatHang model)
+        {
+            var matHang = new Mathang
+            {
+                MaHang = model.maHang,
+                TenHang = model.TenHang,
+                LinkAnh = model.LinkAnh,
+                Description = model.Description,
+                MaCongTy = model.maCongTy,
+                MaLoaiHang = model.maLoaiHang
+            };
+            _context.Add(matHang);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateByModels(string id, MMatHang model)
+        {
+            IQueryable<Mathang> query = _context.Mathangs;
+            var mh = await query
+                .Where(e => e.MaHang == id)
+                .FirstOrDefaultAsync();
+            if (mh != null)
+            {
+                mh.TenHang = model.TenHang;
+                mh.MaCongTy = model.maCongTy;
+                mh.MaLoaiHang= model.maLoaiHang;
+                mh.LinkAnh = model.LinkAnh;
+                mh.Description = model.Description;
+            }
+            else
+            {
+                throw new Exception("Mục không tồn tại");
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Chitietmathang> getChiTietByid(string id)
+        {
+            IQueryable<Chitietmathang> query = _context.Chitietmathangs;
+            var ct = await (from ctmh in query
+                            join mh in _context.Mathangs on ctmh.MaHang equals mh.MaHang
+                            where ctmh.MaHang == id
+                            select ctmh
+                            )
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync();
+            if (ct != null)
+            {
+                return new Chitietmathang
+                {
+                    CanNang = ct.CanNang,
+                    DonViTinh = ct.DonViTinh,
+                    GiaHang = ct.GiaHang,
+                    KichThuoc = ct.KichThuoc,
+                    MauSac = ct.MauSac,
+                    MaHang = ct.MaHang,
+                    SoLuong = ct.SoLuong,
+                    TenHang = ct.TenHang,
+                };
+            }
+            throw new Exception("Hàng không tồn tại");
+        }
     }
 }

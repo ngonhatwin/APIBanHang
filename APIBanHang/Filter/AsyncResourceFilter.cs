@@ -5,6 +5,7 @@ namespace APIBanHang.Filter
     public class AsyncResourceFilter : IAsyncResourceFilter
     {
         private readonly ILogger<AsyncResourceFilter> _logger;
+
         public AsyncResourceFilter(ILogger<AsyncResourceFilter> logger)
         {
             _logger = logger;

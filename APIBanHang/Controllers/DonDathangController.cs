@@ -15,13 +15,13 @@ namespace APIBanHang.Controllers
         {
             services_ = services;
         }
-        [HttpGet("danh-sach-dondathang")]
+        [HttpGet("danh-sach")]
         public async Task<IActionResult> GetAll()
         {
             var ac = await services_.GetAll();
             return Ok(ac);
         }
-        [HttpGet("don-dat-hang/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var ac = await services_.GetById(id);
@@ -31,7 +31,7 @@ namespace APIBanHang.Controllers
             }
             return Ok(ac);
         }
-        [HttpPost("them-don-dat-hang")]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(Dondathang dondathang)
         {
             if (dondathang == null)
@@ -42,7 +42,7 @@ namespace APIBanHang.Controllers
             return Ok();
         }
 
-        [HttpPut("don-dat-hang/{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<IActionResult> Update(string id, Dondathang dondathang)
         {
             if (dondathang == null)
@@ -53,7 +53,7 @@ namespace APIBanHang.Controllers
             return Ok();
         }
 
-        [HttpDelete("don-dat-hang/{id}")]
+        [HttpDelete("delte/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             await services_.Delete(id);

@@ -9,6 +9,7 @@ namespace APIBanHang.Repository
 {
     public interface IRepository<T> where T : class
     {
+        //trả về một Ienumerable
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(string id);
         Task Create(T entity);

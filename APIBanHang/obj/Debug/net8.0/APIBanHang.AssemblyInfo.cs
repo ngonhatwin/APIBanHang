@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("APIBanHang")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e3642ee8aa5a25ae0ec54f123e1a4918e3adce7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+91324ea822d9521725f7d682f043853f9846bfb8")]
 [assembly: System.Reflection.AssemblyProductAttribute("APIBanHang")]
 [assembly: System.Reflection.AssemblyTitleAttribute("APIBanHang")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

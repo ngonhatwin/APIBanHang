@@ -19,14 +19,14 @@ namespace APIBanHang.Controllers
         {
             this.services_ = services_;
         }
-        [HttpGet("danh-sach-mat-hang")]
-        [Route("danh-sach-m-h")]
+        [HttpGet("danh-sach")]
+      
         public async Task<IActionResult> GetAll()
         {
             var ac = await services_.GetAll();
             return Ok(ac);
         }
-        [HttpGet("mat-hang/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var ac = await services_.GetById(id);
@@ -88,7 +88,27 @@ namespace APIBanHang.Controllers
         //    return Ok(mh);
 
         //}
-        [HttpPost("them-mat-hang")]
+        [HttpGet("search-by-name")]
+        public async Task<IActionResult> Search(string name)
+        {
+            var result = await services_.SearchByName(name);
+            if(result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+        [HttpGet("get-chi-tiet")]
+        public async Task<IActionResult> getChiTietMatHang(string id)
+        {
+            var result = await services_.getChiTietByid(id);
+            if(result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+        [HttpPost("create")]
         public async Task<IActionResult> Create(Mathang mathang)
         {
             if (mathang == null)
@@ -98,8 +118,17 @@ namespace APIBanHang.Controllers
             await services_.Create(mathang);
             return Ok();
         }
-
-        [HttpPut("mat-hang/{id}")]
+        [HttpPost("create-by-models")]
+        public async Task<IActionResult> createByModels(MMatHang mathang)
+        {
+            if (mathang == null)
+            {
+                return BadRequest();
+            }
+            await services_.CreateByModels(mathang);
+            return Ok(mathang);
+        }
+        [HttpPut("edit/{id}")]
         public async Task<IActionResult> Update(string id, Mathang mathang)
         {
             if (mathang == null)
@@ -109,12 +138,23 @@ namespace APIBanHang.Controllers
             await services_.Update(id, mathang);
             return Ok();
         }
+        [HttpPut("edit-by-models/{id}")]
+        public async Task<IActionResult> UpdatebyModels(string id, MMatHang mathang)
+        {
+            if (mathang == null)
+            {
+                return BadRequest();
+            }    
+            await services_.UpdateByModels(id, mathang);
+            return Ok(mathang);
+        }
 
-        [HttpDelete("mat-hang/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             await services_.Delete(id );
             return NoContent();
         }
+
     }
 }

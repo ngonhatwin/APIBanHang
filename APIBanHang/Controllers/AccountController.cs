@@ -5,13 +5,12 @@ using APIBanHang.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace APIBanHang.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
-    //[AsyncAuthenFilters]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService services_;
@@ -19,14 +18,15 @@ namespace APIBanHang.Controllers
         {
             services_ = services;
         }
-        [HttpGet("danh-sach-tai-khoan")]
-        [Authorize(Roles = "admin")]
+        [HttpGet("get")]
+        //[Authorize(Roles = "admin")]
+        
         public async Task<IActionResult> GetAll()
         {
             var ac = await services_.GetAll();
             return Ok(ac);
         }
-        [HttpGet("tai-khoan/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var ac = await services_.GetById(id);
@@ -36,7 +36,7 @@ namespace APIBanHang.Controllers
             }
             return Ok(ac);
         }
-        [HttpGet("Search-tai-khoan-by-Name")]
+        [HttpGet("search")]
         public async Task<IActionResult> SreachAccountByName(string name)
         {
             //thiếu await bị lỗi System.Runtime.CompilerServices.AsyncTaskMethodBuilder
@@ -47,7 +47,7 @@ namespace APIBanHang.Controllers
             }    
             return Ok(ac);
         }
-        [HttpPost("them-tai-khoan")]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(Account account)
         {
             if (account == null)
@@ -57,7 +57,7 @@ namespace APIBanHang.Controllers
             await services_.Create(account);
             return Ok();
         }
-        [HttpPost("by-models")]
+        [HttpPost("create-by-models")]
         
         public async Task<IActionResult> CreateByModels(MAccount account)
         {
@@ -69,7 +69,7 @@ namespace APIBanHang.Controllers
             return Ok(account);
         }
 
-        [HttpPut("tai-khoan/{id}")]
+        [HttpPut("put/{id}")]
         public async Task<IActionResult> Update(string id, Account account)
         {
             if (account == null)
@@ -79,7 +79,7 @@ namespace APIBanHang.Controllers
             await services_.Update(id, account);
             return Ok();
         }
-        [HttpPut("tai-khoan-by-models/{id}")]
+        [HttpPut("put-by-models/{id}")]
         public async Task<IActionResult> UpdateByModels(string id, MAccount account)
         {
             if (account == null)
@@ -89,7 +89,7 @@ namespace APIBanHang.Controllers
             await services_.EditByModels(id, account);
             return Ok(account);
         }
-        [HttpDelete("tai-khoan/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             await services_.Delete(id);

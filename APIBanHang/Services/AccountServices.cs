@@ -68,6 +68,8 @@ namespace APIBanHang.Services
             };
             _context.Add(ac);
             await _context.SaveChangesAsync();
+            
+            //Csv helper
 
             using (var writer = new StreamWriter("C:\\Users\\ngonh\\source\\repos\\APIBanHang\\Csv\\Filtered-Account.csv", true))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
@@ -129,7 +131,8 @@ namespace APIBanHang.Services
         public async Task EditByModels(string id, MAccount account)
         {
             //tracking
-            var acc = await (from ac in _context.Accounts where ac.MaAccount == id select ac).SingleOrDefaultAsync();
+            IQueryable<Account> query = _context.Accounts;
+            var acc = await (from ac in query where ac.MaAccount == id select ac).SingleOrDefaultAsync();
             if (acc != null)
             {
                 acc.UserName = account.UserName;
@@ -146,10 +149,11 @@ namespace APIBanHang.Services
                 return Enumerable.Empty<MAccount>();
             }
             IQueryable<Account> query = _context.Accounts;
-            var ac = await query
+                var ac = await query
                 .Where(e => e.UserName.Contains(name))
                 .Select(e => new MAccount
                 {
+                    MaAccount = e.MaAccount,
                     UserName = e.UserName,
                     Email = e.Email,
                     Passwords = e.Passwords,
